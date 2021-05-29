@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemmainactivity"
+        android:enabled="true"
+        android:icon="@drawable/bottomnavigation_home"
+        android:title="Home"
+        />
+
+    <item
+        android:id="@+id/itemdaten"
+        android:enabled="true"
+        android:icon="@drawable/bottomnavigation_daten"
+        android:title="Daten"
+        />
+    <item
+        android:id="@+id/itemhistory"
+        android:enabled="true"
+        android:icon="@drawable/bottomnavigation_history"
+        android:title="History"
+        />
+    <item
+        android:id="@+id/itemchallenges"
+        android:enabled="true"
+        android:icon="@drawable/bottomnavigation_challenges"
+        android:title="Challenges"
+        />
+</menu>
