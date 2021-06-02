@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Addworkout_listview_adapter extends BaseAdapter {
+    /**
+     *normaler Adapter
+     */
     private List<Uebungen> uebung = new ArrayList<>();
     private LayoutInflater inflater;
     private int layoutId;
@@ -36,6 +39,9 @@ public class Addworkout_listview_adapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Setzt name, saetze und wiederholungen
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Uebungen uebungview = uebung.get(position);

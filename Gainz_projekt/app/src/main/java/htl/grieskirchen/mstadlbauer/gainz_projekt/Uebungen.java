@@ -11,12 +11,19 @@ public class Uebungen {
     private int wh;
     private int saetze;
 
+    /**
+     * Konstruktor
+     */
     public Uebungen(String name, int wh, int saetze) {
         this.name = name;
         this.wh = wh;
         this.saetze = saetze;
     }
 
+
+    /**
+     * Getter und Setter Methoden
+     */
     public String getName() {
         return name;
     }

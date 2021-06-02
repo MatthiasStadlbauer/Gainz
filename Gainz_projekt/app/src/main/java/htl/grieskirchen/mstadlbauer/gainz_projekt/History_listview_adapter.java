@@ -12,6 +12,9 @@ import java.util.List;
 
 public class History_listview_adapter extends BaseAdapter {
 
+    /**
+     * Normaler Listview adapter
+     */
     private List<Workout> histroy = new ArrayList<>();
     private LayoutInflater inflater;
     private int layoutId;
@@ -37,6 +40,9 @@ public class History_listview_adapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Setzt Name und das Letzte datum in die ListView
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Workout workout = histroy.get(position);

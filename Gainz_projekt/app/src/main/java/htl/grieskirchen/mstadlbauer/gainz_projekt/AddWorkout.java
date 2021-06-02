@@ -33,9 +33,9 @@ public class AddWorkout extends AppCompatActivity {
     private FloatingActionButton addExercise;
     private Button speichern;
     private Button cancel;
-    List<Uebungen> workout = new ArrayList<>();
-    Addworkout_listview_adapter adapter;
-    ListView uebungenlistview;
+    private List<Uebungen> workout = new ArrayList<>();
+    private Addworkout_listview_adapter adapter;
+    private ListView uebungenlistview;
 
 
     @Override
@@ -68,13 +68,13 @@ public class AddWorkout extends AppCompatActivity {
                 EditText name_workout = findViewById(R.id.name_workout);
                 if(!name_workout.getText().toString().isEmpty()){
                     String name = name_workout.getText().toString();
-                    Workout workout = new Workout(name, AddWorkout.this.workout);
-
-                    Intent intent = new Intent(AddWorkout.this, MainActivity.class);
-                    intent.putExtra("workout", workout.toString());
-                    setResult(RESULT_OK, intent);
-                    finish();
+                        Workout workout = new Workout(name, AddWorkout.this.workout);
+                        Intent intent = new Intent(AddWorkout.this, MainActivity.class);
+                        intent.putExtra("workout", workout.toString());
+                        setResult(RESULT_OK, intent);
+                        finish();
                 }
+                Toast.makeText(AddWorkout.this, "Geben Sie einen Name für ihr Workout ein", Toast.LENGTH_SHORT);
             }
         });
 
@@ -100,12 +100,15 @@ public class AddWorkout extends AppCompatActivity {
             saetze = saetzeed.getText().toString();
             wh = whed.getText().toString();
             workout.add(new Uebungen(name, Integer.valueOf(wh), Integer.valueOf(saetze)));
+
+            //TODO: GPS!! entweder selbst abfragen oder eingabe
             adapter.notifyDataSetChanged();
         }
         else{
             Toast.makeText(AddWorkout.this, "Alle Felder müssen gefüllt sein", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 

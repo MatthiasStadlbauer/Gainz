@@ -12,9 +12,12 @@ public class Workout {
      *
      * uebungen = alle Übungen die im Workout sind
      */
-    String name;
-    String lasttimedate;
-    List<Uebungen> uebungen = new ArrayList<>();
+    private String name;
+    private String lasttimedate;
+    private List<Uebungen> uebungen = new ArrayList<>();
+    private long lat;
+    private long lon;
+    private String addresse;
 
 
     /**
@@ -38,6 +41,13 @@ public class Workout {
         this.name = name;
     }
 
+    public Workout(String name, String lasttimedate, List<Uebungen> uebungen, String addresse){
+        this.name = name;
+        this.lasttimedate = lasttimedate;
+        this.uebungen = uebungen;
+        this.addresse = addresse;
+    }
+
     /**
      * Getter und Setter Methoden
      */
@@ -57,6 +67,42 @@ public class Workout {
         this.uebungen.add(uebungen);
     }
 
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLasttimedate(String lasttimedate) {
+        this.lasttimedate = lasttimedate;
+    }
+
+    public List<Uebungen> getUebungen() {
+        return uebungen;
+    }
+
+    public void setUebungen(List<Uebungen> uebungen) {
+        this.uebungen = uebungen;
+    }
+
+    public long getLat() {
+        return lat;
+    }
+
+    public void setLat(long lat) {
+        this.lat = lat;
+    }
+
+    public long getLon() {
+        return lon;
+    }
+
+    public void setLon(long lon) {
+        this.lon = lon;
+    }
+
+    /**
+     * toString Methode
+     */
     public String toString(){
         String workout = "";
         workout += name + ";" + lasttimedate + ";";

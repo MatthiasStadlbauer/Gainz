@@ -14,8 +14,14 @@ import java.util.List;
 
 
 public class History_fragment extends Fragment {
-    ListView historylistview;
-    private History_listview_adapter lv;
+
+    /**
+     * historylistview = Listview mit Name und Datum des Workouts
+     * adapter = listviewadapter
+     * history = sammlung der Workouts
+     */
+    private ListView historylistview;
+    private History_listview_adapter adapter;
     private List<Workout> history = new ArrayList<>();
 
 
@@ -28,10 +34,14 @@ public class History_fragment extends Fragment {
         return view;
     }
 
+    /**
+     * Initialisierung der listview und des adapters
+     * @param view
+     */
     private void init(View view)
     {
         historylistview = view.findViewById(R.id.history_fragment_ListView);
-        lv = new History_listview_adapter(view.getContext(), R.layout.history_listview_adapter, history);
+        adapter = new History_listview_adapter(view.getContext(), R.layout.history_listview_adapter, history);
     }
 
     @Override

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gainz_projekt">
-        <activity android:name=".AddWorkout"></activity>
+        <activity android:name=".Workout_detail"></activity>
+        <activity android:name=".AddWorkout" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

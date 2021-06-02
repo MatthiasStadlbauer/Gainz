@@ -14,14 +14,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity  {
 
     /**
      * BottomNavigationBar
      */
-    BottomNavigationView bottomNavigationView;
-
-
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity  {
         //initialisierung der Views
         initViews();
     }
+
 
     /**
      * initialisierungen der Variablen

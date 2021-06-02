@@ -12,7 +12,12 @@ import java.util.List;
 
 public class Home_fragment_listview_adapter extends BaseAdapter {
 
-    List<Workout> workoutList = new ArrayList<>();
+    /**
+     * normaler Listview Adapter
+     */
+
+
+    private List<Workout> workoutList = new ArrayList<>();
     private LayoutInflater inflater;
     private int layoutId;
 
@@ -37,6 +42,9 @@ public class Home_fragment_listview_adapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * setzt den Name des Workouts in die TextView
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Workout workout = workoutList.get(position);

@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ComponentActivity;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,15 +27,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class Home_fragment extends Fragment {
 
-    List<Workout> workoutList = new ArrayList<>();
-    Home_fragment_listview_adapter adapter;
-    ListView home_fragemtn_listview;
+    private List<Workout> workoutList = new ArrayList<>();
+    private Home_fragment_listview_adapter adapter;
+    private ListView home_fragment_listview;
 
     /**
      * Button für Hinzufügen der Workouts
      */
-    FloatingActionButton addWorkoutButton;
-
+    private FloatingActionButton addWorkoutButton;
 
     /**
      * Home fragment
@@ -41,10 +44,27 @@ public class Home_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_fragment, container, false);
         initButtons(view);
-        adapter = new Home_fragment_listview_adapter(view.getContext(), R.layout.home_fragment_listview_adapter, workoutList);
-        home_fragemtn_listview = view.findViewById(R.id.main_listview);
-        home_fragemtn_listview.setAdapter(adapter);
+        initListview(view);
         return view;
+    }
+
+    /**
+     * initialisierung der Listview
+     */
+    private void initListview(View view) {
+        adapter = new Home_fragment_listview_adapter(view.getContext(), R.layout.home_fragment_listview_adapter, workoutList);
+        home_fragment_listview = view.findViewById(R.id.main_listview);
+        home_fragment_listview.setAdapter(adapter);
+        home_fragment_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), Workout_detail.class);
+                intent.putExtra("Workout", workoutList.get(position).toString());
+                workoutList.remove(position);
+                startActivityForResult(intent, 32);
+            }
+        });
+        registerForContextMenu(home_fragment_listview);
     }
 
     /**
@@ -61,29 +81,85 @@ public class Home_fragment extends Fragment {
         });
     }
 
+    /**
+     * Rückgabe der AddWorkout requestCode = 28
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if(requestCode == 28) {
-                if(resultCode == RESULT_OK) {
-                    Bundle bundle = data.getExtras();
-                    String workout = bundle.getString("workout");
+        if (requestCode == 28) {
+            if (resultCode == RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                String workout = bundle.getString("workout");
 
-                    String[] workoutParts = workout.split(";");
-                    Workout workout1 = new Workout(workoutParts[0]);
+                String[] workoutParts = workout.split(";");
+                Workout workout1 = new Workout(workoutParts[0]);
 
-                    if(!workoutParts[1].isEmpty()) {
-                        workout1.setLastdate(workoutParts[1]);
-                    }
-
-                    for(int i = 2; i < workoutParts.length; i++) {
-                        String[] workoutUebung = workoutParts[i].split(",");
-                        workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
-                    }
-
-                    workoutList.add(workout1);
-                    adapter.notifyDataSetChanged();
+                if (!workoutParts[1].isEmpty()) {
+                    workout1.setLastdate(workoutParts[1]);
                 }
+
+                for (int i = 2; i < workoutParts.length; i++) {
+                    String[] workoutUebung = workoutParts[i].split(",");
+                    workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
+                }
+
+                workoutList.add(workout1);
+                adapter.notifyDataSetChanged();
             }
+        }
+        if(requestCode == 32){
+            if(resultCode == RESULT_OK){
+                Bundle bundle = data.getExtras();
+                String workout = bundle.getString("workout");
+
+                String[] workoutParts = workout.split(";");
+                Workout workout1 = new Workout(workoutParts[0]);
+
+                if (!workoutParts[1].isEmpty()) {
+                    workout1.setLastdate(workoutParts[1]);
+                }
+
+                for (int i = 2; i < workoutParts.length; i++) {
+                    String[] workoutUebung = workoutParts[i].split(",");
+                    workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
+                }
+
+                workoutList.add(workout1);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        int viewId = v.getId();
+        if (viewId == R.id.main_listview) {
+            getActivity().getMenuInflater().inflate(R.menu.home_fragment_kontextmenue, menu);
+        }
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Workout workoutitem;
+        if (info != null) {
+            long id = info.id;
+            int pos = info.position;
+            workoutitem = info != null ? (Workout) home_fragment_listview.getAdapter().getItem(pos) : null;
+            if (item.getItemId() == R.id.delete_workout) {
+                workoutList.remove(workoutitem);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        if (item.getItemId() == R.id.edit_workout) {
+                //TODO: neue Aktivity starten und workoutitem übergeben für bearbeiten
+        }
+        return super.onContextItemSelected(item);
+    }
+
+
 }
