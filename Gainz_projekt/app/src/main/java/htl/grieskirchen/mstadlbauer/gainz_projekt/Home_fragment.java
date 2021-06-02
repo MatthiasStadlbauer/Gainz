@@ -50,8 +50,6 @@ public class Home_fragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddWorkout.class);
                 startActivityForResult(intent, 28);
-
-
             }
         });
     }

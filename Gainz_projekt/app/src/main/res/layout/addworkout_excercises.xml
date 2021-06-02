@@ -36,7 +36,7 @@
             android:layout_marginEnd="20dp"
             android:ems="8"
             android:hint="0"
-            android:inputType="text" />
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
@@ -59,6 +59,7 @@
             android:layout_marginEnd="20dp"
             android:ems="8"
             android:hint="0"
-            android:inputType="text" />
+            android:inputType="number"
+            />
     </LinearLayout>
 </LinearLayout>

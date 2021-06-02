@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +25,8 @@ public class AddWorkout extends AppCompatActivity {
     private Button speichern;
     private Button cancel;
     List<Uebungen> workout = new ArrayList<>();
+    Addworkout_listview_adapter adapter;
+    ListView uebungenlistview;
 
 
     @Override
@@ -33,6 +36,9 @@ public class AddWorkout extends AppCompatActivity {
 
         initButtons();
 
+        uebungenlistview = findViewById(R.id.addWorkout_listview);
+        adapter = new Addworkout_listview_adapter(this, R.layout.addworkout_listview_adapter, workout);
+        uebungenlistview.setAdapter(adapter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -55,7 +61,6 @@ public class AddWorkout extends AppCompatActivity {
                     String name = name_workout.getText().toString();
                     Workout workout = new Workout(name, AddWorkout.this.workout);
 
-                    //TODO zurückgeben des Workouts und in Main Fragment in die List geben
                     Intent intent = new Intent(AddWorkout.this, MainActivity.class);
                     intent.putExtra("workout", workout.toString());
                     setResult(RESULT_OK, intent);
@@ -68,8 +73,9 @@ public class AddWorkout extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddWorkout.this, MainActivity.class);
-                startActivity(intent);
+                finish();
+                /*Intent intent = new Intent(AddWorkout.this, MainActivity.class);
+                startActivity(intent);*/
             }
         });
 
@@ -87,6 +93,7 @@ public class AddWorkout extends AppCompatActivity {
             saetze = saetzeed.getText().toString();
             wh = whed.getText().toString();
             workout.add(new Uebungen(name, Integer.valueOf(wh), Integer.valueOf(saetze)));
+            adapter.notifyDataSetChanged();
         }
         else{
             Toast.makeText(AddWorkout.this, "Alle Felder müssen gefüllt sein", Toast.LENGTH_SHORT).show();
