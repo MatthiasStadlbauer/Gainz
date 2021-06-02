@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity  {
      */
     BottomNavigationView bottomNavigationView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,28 +64,5 @@ public class MainActivity extends AppCompatActivity  {
             return true;
         }
     };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 28) {
-            if(resultCode == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                String workout = bundle.getString("workout");
-
-                String[] workoutParts = workout.split(";");
-                Workout workout1 = new Workout(workoutParts[0]);
-
-                if(!workoutParts[1].isEmpty()) {
-                    workout1.setLastdate(workoutParts[1]);
-                }
-
-                for(int i = 2; i < workoutParts.length; i++) {
-                    String[] workoutUebung = workoutParts[i].split(",");
-                    workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
-                }
-            }
-        }
-    }
 
 }

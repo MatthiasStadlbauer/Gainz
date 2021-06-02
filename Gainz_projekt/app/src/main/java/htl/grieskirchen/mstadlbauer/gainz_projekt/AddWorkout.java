@@ -21,6 +21,15 @@ import java.util.List;
 
 public class AddWorkout extends AppCompatActivity {
 
+
+    /**
+     * FloatingActionButton = zum Hinzufügen einer Uebung
+     * speichern = speichern des Workouts
+     * cancel = Abruch des erstellens eines Wokouts
+     * workout = List aller Uebungen in einem Workout
+     * adapter = adapter für das Anzeigen der Uebungen
+     * uebungenlistview = Anzeigen der Uebungen
+     */
     private FloatingActionButton addExercise;
     private Button speichern;
     private Button cancel;
@@ -74,8 +83,6 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                /*Intent intent = new Intent(AddWorkout.this, MainActivity.class);
-                startActivity(intent);*/
             }
         });
 
