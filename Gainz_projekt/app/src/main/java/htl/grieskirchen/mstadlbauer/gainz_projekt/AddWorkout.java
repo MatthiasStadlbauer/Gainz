@@ -40,6 +40,8 @@ public class AddWorkout extends AppCompatActivity {
 
 
 
+    //On Create
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
