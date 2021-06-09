@@ -6,27 +6,26 @@
     tools:context=".Daten_fragment">
 
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:text="Körperdaten:"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
-                />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="20"
+            android:text="Körperdaten:"
+            android:textSize="25dp" />
 
-           <ListView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_weight="1"
-               android:layout_marginTop="10dp"
-               android:layout_marginBottom="10dp"
-               />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

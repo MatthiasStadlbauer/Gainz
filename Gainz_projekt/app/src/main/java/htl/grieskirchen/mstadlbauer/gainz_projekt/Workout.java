@@ -48,6 +48,16 @@ public class Workout {
         this.addresse = addresse;
     }
 
+    public Workout(String name, String lasttimedate, List<Uebungen> uebungen, String addresse, long lat, long lon)
+    {
+        this.name = name;
+        this.lasttimedate = lasttimedate;
+        this.uebungen = uebungen;
+        this.addresse = addresse;
+        this.lat = lat;
+        this.lon = lon;
+    }
+
     /**
      * Getter und Setter Methoden
      */
@@ -100,9 +110,15 @@ public class Workout {
         this.lon = lon;
     }
 
+
+    public String getAddresse() {
+        return addresse;
+    }
+
     /**
      * toString Methode
      */
+    //TODO aendern für GPS bei allen Activtys und der toString methode
     public String toString(){
         String workout = "";
         workout += name + ";" + lasttimedate + ";";

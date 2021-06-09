@@ -129,6 +129,27 @@ public class Home_fragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         }
+        if(requestCode == 36)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                Bundle bundle = data.getExtras();
+                String workout = bundle.getString("workout");
+                String[] workoutParts = workout.split(";");
+                Workout workout1 = new Workout(workoutParts[0]);
+
+                if (!workoutParts[1].isEmpty()) {
+                    workout1.setLastdate(workoutParts[1]);
+                }
+
+                for (int i = 2; i < workoutParts.length; i++) {
+                    String[] workoutUebung = workoutParts[i].split(",");
+                    workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
+                }
+                workoutList.add(workout1);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -144,7 +165,7 @@ public class Home_fragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Workout workoutitem;
+        Workout workoutitem = null;
         if (info != null) {
             long id = info.id;
             int pos = info.position;
@@ -156,10 +177,26 @@ public class Home_fragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.edit_workout) {
-                //TODO: neue Aktivity starten und workoutitem übergeben für bearbeiten
+            if(workoutitem != null)
+            {
+            Intent intent = new Intent(getActivity(), Workout_edit.class);
+            intent.putExtra("Workout", workoutitem.toString());
+            workoutList.remove(workoutitem);
+            startActivityForResult(intent, 36);
+            }
         }
         return super.onContextItemSelected(item);
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        speichern();
+    }
+
+
+    private void speichern(){
+
+    }
 }
