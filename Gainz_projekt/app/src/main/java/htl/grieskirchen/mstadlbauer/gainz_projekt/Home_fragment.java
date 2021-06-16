@@ -83,6 +83,7 @@ public class Home_fragment extends Fragment {
 
     /**
      * Rückgabe der AddWorkout requestCode = 28
+     *
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -99,7 +100,10 @@ public class Home_fragment extends Fragment {
                     workout1.setLastdate(workoutParts[1]);
                 }
 
-                for (int i = 2; i < workoutParts.length; i++) {
+                workout1.setLat(Double.parseDouble(workoutParts[2]));
+                workout1.setLon(Double.parseDouble(workoutParts[3]));
+
+                for (int i = 5; i < workoutParts.length; i++) {
                     String[] workoutUebung = workoutParts[i].split(",");
                     workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
                 }

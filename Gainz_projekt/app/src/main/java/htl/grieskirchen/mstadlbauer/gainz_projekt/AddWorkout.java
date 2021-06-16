@@ -4,8 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,6 +46,12 @@ public class AddWorkout extends AppCompatActivity {
     private ListView uebungenlistview;
 
 
+    //Location
+    private LocationManager locationManager;
+    private final int RQ_ACCESS_FINE_LOCATION = 12345;
+    private boolean isGpsAllowed = false;
+    private LocationListener locationListener;
+
 
     //On Create
 
@@ -66,9 +79,27 @@ public class AddWorkout extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initGps();
     }
 
-    private void initButtons(){
+    private void initGps() {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, RQ_ACCESS_FINE_LOCATION);
+        } else {
+            gpsIsGranted();
+        }
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+            }
+        };
+
+    }
+
+    private void initButtons() {
         addExercise = findViewById(R.id.addexcercise_floatingbutton);
         addExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +114,19 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText name_workout = findViewById(R.id.name_workout);
-                if(!name_workout.getText().toString().isEmpty()){
+                if (!name_workout.getText().toString().isEmpty()) {
                     String name = name_workout.getText().toString();
-                        Workout workout = new Workout(name, AddWorkout.this.workout);
-                        Intent intent = new Intent(AddWorkout.this, MainActivity.class);
-                        intent.putExtra("workout", workout.toString());
-                        setResult(RESULT_OK, intent);
-                        finish();
+
+                    Location location = btnClickUpdateCoordinates(new View(getApplicationContext()));
+                    Workout workout = new Workout(name, AddWorkout.this.workout);
+                    workout.setLon(location.getLongitude());
+                    workout.setLat(location.getLatitude());
+                    //TODO set address for workout
+                    workout.setAddresse("DummyAddresse");
+                    Intent intent = new Intent(AddWorkout.this, MainActivity.class);
+                    intent.putExtra("workout", workout.toString());
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 Toast.makeText(AddWorkout.this, "Geben Sie einen Name für ihr Workout ein", Toast.LENGTH_SHORT);
             }
@@ -98,54 +135,90 @@ public class AddWorkout extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
 
     }
 
-    public void handleDialog(View vDialog){
+    public void handleDialog(View vDialog) {
         EditText nameed = vDialog.findViewById(R.id.addworkout_excercise_name);
         EditText saetzeed = vDialog.findViewById(R.id.addworkout_excercise_saetze);
         EditText whed = vDialog.findViewById(R.id.addworkout_excercise_wiederholungen);
         String name;
         String saetze;
         String wh;
-        if(!nameed.getText().toString().isEmpty() && !saetzeed.getText().toString().isEmpty()&&!whed.getText().toString().isEmpty()) {
+        if (!nameed.getText().toString().isEmpty() && !saetzeed.getText().toString().isEmpty() && !whed.getText().toString().isEmpty()) {
             name = nameed.getText().toString();
             saetze = saetzeed.getText().toString();
             wh = whed.getText().toString();
             workout.add(new Uebungen(name, Integer.valueOf(wh), Integer.valueOf(saetze)));
-
-            //TODO: GPS!! entweder selbst abfragen oder eingabe
             adapter.notifyDataSetChanged();
-        }
-        else{
+        } else {
             Toast.makeText(AddWorkout.this, "Alle Felder müssen gefüllt sein", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void editDialog(View vDialog, int postion){
+    public void editDialog(View vDialog, int postion) {
         EditText nameed = vDialog.findViewById(R.id.addworkout_excercise_name);
         EditText saetzeed = vDialog.findViewById(R.id.addworkout_excercise_saetze);
         EditText whed = vDialog.findViewById(R.id.addworkout_excercise_wiederholungen);
         String name;
         String saetze;
         String wh;
-        if(!nameed.getText().toString().isEmpty() && !saetzeed.getText().toString().isEmpty()&&!whed.getText().toString().isEmpty()) {
+        if (!nameed.getText().toString().isEmpty() && !saetzeed.getText().toString().isEmpty() && !whed.getText().toString().isEmpty()) {
             name = nameed.getText().toString();
             saetze = saetzeed.getText().toString();
             wh = whed.getText().toString();
             workout.add(new Uebungen(name, Integer.valueOf(wh), Integer.valueOf(saetze)));
             workout.remove(postion);
             adapter.notifyDataSetChanged();
-        }
-        else{
+        } else {
             Toast.makeText(AddWorkout.this, "Alle Felder müssen gefüllt sein", Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode != RQ_ACCESS_FINE_LOCATION) return;
+        if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permission ACCESS_FINE_LOCATION denied!", Toast.LENGTH_SHORT);
+        } else {
+            gpsIsGranted();
+        }
+    }
+
+    private void gpsIsGranted() {
+        isGpsAllowed = true;
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isGpsAllowed) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isGpsAllowed) locationManager.removeUpdates(locationListener);
+    }
+
+
+
+    @SuppressLint("MissingPermission")
+    public Location btnClickUpdateCoordinates(View view){
+        if(isGpsAllowed){
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        return null;
+    }
 
 
 }

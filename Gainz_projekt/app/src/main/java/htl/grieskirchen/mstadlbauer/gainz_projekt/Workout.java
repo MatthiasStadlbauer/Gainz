@@ -15,8 +15,8 @@ public class Workout {
     private String name;
     private String lasttimedate;
     private List<Uebungen> uebungen = new ArrayList<>();
-    private long lat;
-    private long lon;
+    private double lat;
+    private double lon;
     private String addresse;
 
 
@@ -94,22 +94,24 @@ public class Workout {
         this.uebungen = uebungen;
     }
 
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public long getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(long lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
+
+    public void setAddresse(String addresse){this.addresse = addresse;}
 
     public String getAddresse() {
         return addresse;
@@ -121,7 +123,7 @@ public class Workout {
     //TODO aendern für GPS bei allen Activtys und der toString methode
     public String toString(){
         String workout = "";
-        workout += name + ";" + lasttimedate + ";";
+        workout += name + ";" + lasttimedate + ";" + lat + ";" + lon + ";" + addresse + ";";
         for (Uebungen ue : uebungen) {
             workout += ue.toString() + ";";
         }
