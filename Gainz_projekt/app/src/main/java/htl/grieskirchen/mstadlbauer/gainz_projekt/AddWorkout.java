@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,8 +25,20 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpRetryException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class AddWorkout extends AppCompatActivity {
 
@@ -51,6 +64,8 @@ public class AddWorkout extends AppCompatActivity {
     private final int RQ_ACCESS_FINE_LOCATION = 12345;
     private boolean isGpsAllowed = false;
     private LocationListener locationListener;
+    private String workoutaddress;
+    private boolean done = false;
 
 
     //On Create
@@ -115,18 +130,18 @@ public class AddWorkout extends AppCompatActivity {
             public void onClick(View v) {
                 EditText name_workout = findViewById(R.id.name_workout);
                 if (!name_workout.getText().toString().isEmpty()) {
-                    String name = name_workout.getText().toString();
-
                     Location location = btnClickUpdateCoordinates(new View(getApplicationContext()));
+                    Locationiq lq = new Locationiq();
+                    lq.execute(location.getLatitude(), location.getLongitude());
+                   /* String name = name_workout.getText().toString();
                     Workout workout = new Workout(name, AddWorkout.this.workout);
                     workout.setLon(location.getLongitude());
                     workout.setLat(location.getLatitude());
-                    //TODO set address for workout
-                    workout.setAddresse("DummyAddresse");
+                    workout.setAddresse(workoutaddress);
                     Intent intent = new Intent(AddWorkout.this, MainActivity.class);
                     intent.putExtra("workout", workout.toString());
                     setResult(RESULT_OK, intent);
-                    finish();
+                    finish();*/
                 }
                 Toast.makeText(AddWorkout.this, "Geben Sie einen Name für ihr Workout ein", Toast.LENGTH_SHORT);
             }
@@ -207,18 +222,92 @@ public class AddWorkout extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(isGpsAllowed) locationManager.removeUpdates(locationListener);
+        if (isGpsAllowed) locationManager.removeUpdates(locationListener);
     }
 
 
-
     @SuppressLint("MissingPermission")
-    public Location btnClickUpdateCoordinates(View view){
-        if(isGpsAllowed){
+    public Location btnClickUpdateCoordinates(View view) {
+        if (isGpsAllowed) {
             return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         return null;
     }
+
+
+    private class Locationiq extends AsyncTask<Double, Integer, String> {
+
+        @Override
+        protected String doInBackground(Double... doubles) {
+
+            double lat = doubles[0];
+            double lon = doubles[1];
+
+
+            String sJson = "";
+            try {
+                HttpsURLConnection connection =
+                        (HttpsURLConnection) new URL("https://eu1.locationiq.com/v1/reverse.php?key=pk.1627b327355066744e8601bac7e85491&lat=" + lat  + "&lon=" + lon + "&format=json").openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Content-Type", "application/json");
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    sJson = readResponseStream(reader);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return sJson;
+        }
+
+        private String readResponseStream(BufferedReader reader) throws IOException {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            return stringBuilder.toString();
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            String temp = outputRepoNames(s);
+            workoutaddress = temp;
+            done = true;
+            EditText name_workout = findViewById(R.id.name_workout);
+            Location location = btnClickUpdateCoordinates(new View(getApplicationContext()));
+            String name = name_workout.getText().toString();
+            Workout workout = new Workout(name, AddWorkout.this.workout);
+            workout.setLon(location.getLongitude());
+            workout.setLat(location.getLatitude());
+            workout.setAddresse(workoutaddress);
+            Intent intent = new Intent(AddWorkout.this, MainActivity.class);
+            intent.putExtra("workout", workout.toString());
+            setResult(RESULT_OK, intent);
+            finish();
+            super.onPostExecute(s);
+        }
+
+        private String outputRepoNames(String s) {
+            StringBuilder stringBuilder = new StringBuilder();
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject address = jsonObject.getJSONObject("address");
+                stringBuilder.append(address.optString("road"));
+                stringBuilder.append(",");
+                stringBuilder.append(address.optString("house_number"));
+                stringBuilder.append(",");
+                stringBuilder.append(address.optString("postcode"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return stringBuilder.toString();
+        }
+    }
+
 
 
 }

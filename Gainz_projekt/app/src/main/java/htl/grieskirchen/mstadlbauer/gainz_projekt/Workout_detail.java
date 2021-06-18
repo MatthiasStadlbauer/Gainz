@@ -79,35 +79,38 @@ public class Workout_detail extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickedonstart = true;
-                end.setText("Beenden");
-                workoutstart = LocalTime.now();
-                lasttimedone = LocalDate.now();
-            }
-        });
-
-        end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (clickedonstart) {
+                if(clickedonstart == false)
+                {
+                    clickedonstart = true;
+                    start.setText("Beenden");
+                    workoutstart = LocalTime.now();
+                    lasttimedone = LocalDate.now();
+                }else
+                {
                     workoutende = LocalTime.now();
                     String dauer = "";
                     dauer += "Das Workout hat : " + String.valueOf(workoutende.getHour() - workoutstart.getHour()) + " Stunden " + String.valueOf(workoutende.getMinute() - workoutstart.getMinute()) + " Minuten gedauert";
                     new AlertDialog.Builder(workout_detail).setMessage(dauer + "\n Wollen Sie das Workout stoppen").setPositiveButton("Ja", ((dialog, which) -> {
                         handleDialog();
                     })).setNegativeButton("Nein", null).show();
-                } else {
-                    Intent intent = new Intent(workout_detail, MainActivity.class);
+                }
+
+            }
+        });
+
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                   Intent intent = new Intent(workout_detail, MainActivity.class);
                     intent.putExtra("workout", workout1.toString());
                     setResult(RESULT_OK, intent);
                     finish();
-                }
             }
         });
     }
 
     private void handleDialog() {
-        end.setText("Abbrechen");
+        start.setText("Starten");
         clickedonstart = false;
         workout1.setLastdate(LocalDate.now().toString());
         Intent intent = new Intent(this, MainActivity.class);

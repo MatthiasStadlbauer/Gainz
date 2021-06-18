@@ -2,8 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="htl.grieskirchen.mstadlbauer.gainz_projekt">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
     <application
         android:allowBackup="true"
@@ -11,8 +14,9 @@
         android:label="Gainz"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Gainz_projekt">
-        <activity android:name=".Workout_edit"></activity>
+        android:theme="@style/Theme.Gainz_projekt"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Workout_edit" />
         <activity android:name=".Workout_detail" />
         <activity android:name=".AddWorkout" />
         <activity android:name=".MainActivity">
