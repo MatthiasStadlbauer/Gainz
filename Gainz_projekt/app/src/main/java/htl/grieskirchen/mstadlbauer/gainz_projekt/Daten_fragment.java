@@ -3,11 +3,16 @@ package htl.grieskirchen.mstadlbauer.gainz_projekt;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -53,6 +58,7 @@ public class Daten_fragment extends Fragment {
             lv = v.findViewById(R.id.datenfragment_listivew);
             kla = new Koerpergewicht_listview_adpter(getContext(), R.layout.koerpergewicht_listview_adapter, körpergewicht);
             lv.setAdapter(kla);
+            registerForContextMenu(lv);
         }
 
         private void showDialog(){
@@ -66,5 +72,30 @@ public class Daten_fragment extends Fragment {
             String gewicht = koerpergewicht.getText().toString();
             körpergewicht.add(new Körperdaten(Double.parseDouble(gewicht), LocalDate.now()));
             kla.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        int viewid = v.getId();
+        if(viewid == R.id.datenfragment_listivew){
+            getActivity().getMenuInflater().inflate(R.menu.daten_fragment_kontextmenue, menu);
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Körperdaten koerperdaten = null;
+        if (info != null) {
+            long id = info.id;
+            int pos = info.position;
+            koerperdaten = info != null ? (Körperdaten) lv.getAdapter().getItem(pos) : null;
+            if (item.getItemId() == R.id.daten_fragment_kontextmenue_delete) {
+                körpergewicht.remove(koerperdaten);
+                kla.notifyDataSetChanged();
+            }
+        }
+        return super.onContextItemSelected(item);
     }
 }

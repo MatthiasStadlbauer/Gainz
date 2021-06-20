@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:inputType="textPersonName"
-        android:hint="Gewicht in kg"/>
+        android:inputType="number"
+        android:hint="Gewicht in kg"
+        />
 </LinearLayout>
