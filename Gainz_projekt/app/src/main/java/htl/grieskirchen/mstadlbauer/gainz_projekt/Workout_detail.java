@@ -48,6 +48,9 @@ public class Workout_detail extends AppCompatActivity {
         if (!workoutParts[1].isEmpty()) {
             workout1.setLastdate(workoutParts[1]);
         }
+        workout1.setLat(Double.parseDouble(workoutParts[2]));
+        workout1.setLon(Double.parseDouble(workoutParts[3]));
+        workout1.setAddresse(workoutParts[4]);
         
         for (int i = 5; i < workoutParts.length; i++) {
             String[] workoutUebung = workoutParts[i].split(",");

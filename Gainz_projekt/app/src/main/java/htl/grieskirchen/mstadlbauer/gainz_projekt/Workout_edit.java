@@ -114,7 +114,10 @@ public class Workout_edit extends AppCompatActivity {
         if (!workoutParts[1].isEmpty()) {
             workout1.setLastdate(workoutParts[1]);
         }
-        for (int i = 2; i < workoutParts.length; i++) {
+        workout1.setLat(Double.parseDouble(workoutParts[2]));
+        workout1.setLon(Double.parseDouble(workoutParts[3]));
+        workout1.setAddresse(workoutParts[4]);
+        for (int i = 5; i < workoutParts.length; i++) {
             String[] workoutUebung = workoutParts[i].split(",");
             workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
         }
