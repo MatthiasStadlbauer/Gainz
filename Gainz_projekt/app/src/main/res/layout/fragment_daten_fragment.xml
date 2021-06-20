@@ -30,10 +30,11 @@
                 android:text="Zielgewicht : "
                 />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Noch nicht gesetzt"/>
+                android:hint="Noch nicht gesetzt"
+                android:inputType="number"/>
         </LinearLayout>
 
         <ListView
