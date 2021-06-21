@@ -321,7 +321,7 @@ public class Home_fragment extends Fragment {
             }
         } else {
             //below android 11
-            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, 187);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, 187);
         }
     }
 }

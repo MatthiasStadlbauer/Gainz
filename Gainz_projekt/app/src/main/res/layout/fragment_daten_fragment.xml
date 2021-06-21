@@ -31,10 +31,11 @@
                 />
 
             <EditText
+                android:id="@+id/gewicht_ziel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Noch nicht gesetzt"
-                android:inputType="number"/>
+                android:inputType="number" />
         </LinearLayout>
 
         <ListView
