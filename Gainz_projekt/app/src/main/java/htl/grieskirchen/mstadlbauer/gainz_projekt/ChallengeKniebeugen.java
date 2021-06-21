@@ -49,6 +49,15 @@ public class ChallengeKniebeugen extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActivity().findViewById(R.id.button_remove_kniebeugen_anfänger);
+        getActivity().findViewById(R.id.button_add_kniebeugen_anfänger);
+        getActivity().findViewById(R.id.final_button_add_kniebeugen_anfänger);
+
+        getActivity().findViewById(R.id.button_remove_kniebeugen_fortgeschritten);
+        getActivity().findViewById(R.id.button_add_kniebeugen_fortgeschritten);
+        getActivity().findViewById(R.id.final_button_add_kniebeugen_fortgeschritten);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
