@@ -54,27 +54,28 @@ public class NotificationService extends Service {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            //TODO: Auslesen der Workouts und dann mit der Location vergleichen
-            //TODO Notificationchannel noch anlegen und austesten der ganzen Notifications
-            int l = 10;
-            for (int i = 0; i < l; i++) {
-                Workout workout = new Workout("Test");
-                //current ersetzen
-                double distance = current.distanceTo(current)/1000;
-                if(distance < 1)
-                {
-                    locationWorkoutNotification(workout.getName(), i, workout);
-                }
-            }
+                //TODO: Auslesen der Workouts und dann mit der Location vergleichen
+                //TODO Notificationchannel noch anlegen und austesten der ganzen Notifications
+                int l = 10;
 
-            try {
-                Thread.sleep(60000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                for (int i = 0; i < l; i++) {
+                    Workout workout = new Workout("Test");
+                    //current ersetzen
+                    double distance = current.distanceTo(current) / 1000;
+                    if (distance < 1) {
+                        locationWorkoutNotification(workout.getName(), i, workout);
+                    }
+                }
+
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
+
 
     private void locationWorkoutNotification(String title, int id, Workout workout) {
         Intent intent = new Intent(this, Workout_detail.class);
