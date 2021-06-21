@@ -1,5 +1,7 @@
 package htl.grieskirchen.mstadlbauer.gainz_projekt;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,5 +30,11 @@ public class Körperdaten {
 
     public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return gewicht + ";" + localDate.toString();
     }
 }
