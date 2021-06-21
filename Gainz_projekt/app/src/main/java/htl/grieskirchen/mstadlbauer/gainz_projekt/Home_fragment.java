@@ -225,28 +225,27 @@ public class Home_fragment extends Fragment {
     }
 
 
-    @Override
+  /*  @Override
     public void onStop() {
         super.onStop();
         save();
     }
-
+*/
     @Override
         public void onPause() {
-        super.onPause();
         save();
+        super.onPause();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        save();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        load();
     }
 
     private void save() {
@@ -255,6 +254,8 @@ public class Home_fragment extends Fragment {
         File outFile = Environment.getExternalStorageDirectory();
         String path = outFile.getAbsolutePath();
         String fullPath = path + File.separator + fileName;
+        File f = new File(fullPath);
+        f.delete();
         try {
             PrintWriter out = new PrintWriter(
                     new OutputStreamWriter(
@@ -287,8 +288,27 @@ public class Home_fragment extends Fragment {
             }
             String workoutdetails = buffer.toString();
 
-            String[] workouttemp =workoutdetails.split("]");
-            
+            String[] workoutstemp =workoutdetails.split("]");
+            for (String workouttemp:workoutstemp
+                 ) {
+                String[] workoutParts = workouttemp.split(";");
+                Workout workout1 = new Workout(workoutParts[0]);
+
+                if (!workoutParts[1].isEmpty()) {
+                    workout1.setLastdate(workoutParts[1]);
+                }
+
+                workout1.setLat(Double.parseDouble(workoutParts[2]));
+                workout1.setLon(Double.parseDouble(workoutParts[3]));
+                workout1.setAddresse(workoutParts[4]);
+
+                for (int i = 5; i < workoutParts.length; i++) {
+                    String[] workoutUebung = workoutParts[i].split(",");
+                    workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
+                }
+                workoutList.add(workout1);
+                adapter.notifyDataSetChanged();
+            }
             in.close();
 
         } catch (Exception e) {
@@ -321,7 +341,7 @@ public class Home_fragment extends Fragment {
             }
         } else {
             //below android 11
-            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, 187);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, 187);
         }
     }
 }
