@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ChallengeSitUps">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp"
+        >
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -225,5 +232,6 @@
         </LinearLayout>
 
     </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
