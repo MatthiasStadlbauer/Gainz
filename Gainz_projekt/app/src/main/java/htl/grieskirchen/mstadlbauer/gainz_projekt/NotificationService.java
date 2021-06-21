@@ -56,21 +56,23 @@ public class NotificationService extends Service {
 
                 //TODO: Auslesen der Workouts und dann mit der Location vergleichen
                 //TODO Notificationchannel noch anlegen und austesten der ganzen Notifications
-                int l = 10;
+                if (current != null) {
+                    int l = 10;
 
-                for (int i = 0; i < l; i++) {
-                    Workout workout = new Workout("Test");
-                    //current ersetzen
-                    double distance = current.distanceTo(current) / 1000;
-                    if (distance < 1) {
-                        locationWorkoutNotification(workout.getName(), i, workout);
+                    for (int i = 0; i < l; i++) {
+                        Workout workout = new Workout("Test");
+                        //current ersetzen
+                        double distance = current.distanceTo(current) / 1000;
+                        if (distance < 1) {
+                            locationWorkoutNotification(workout.getName(), i, workout);
+                        }
                     }
-                }
 
-                try {
-                    Thread.sleep(60000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
