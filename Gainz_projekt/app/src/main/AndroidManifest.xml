@@ -3,7 +3,6 @@
     package="htl.grieskirchen.mstadlbauer.gainz_projekt">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -21,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gainz_projekt"
         android:usesCleartextTraffic="true">
-        <service android:name=".NotificationService"/>
+        <activity android:name=".MySettingsActivity"></activity>
+
+        <service android:name=".NotificationService" />
+
         <activity android:name=".Workout_edit" />
         <activity android:name=".Workout_detail" />
         <activity android:name=".AddWorkout" />
