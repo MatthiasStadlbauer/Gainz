@@ -53,7 +53,7 @@ public class NotificationService extends Service {
             Location current = null;
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
+
             //TODO: Auslesen der Workouts und dann mit der Location vergleichen
             //TODO Notificationchannel noch anlegen und austesten der ganzen Notifications
             int l = 10;
@@ -71,6 +71,7 @@ public class NotificationService extends Service {
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
             }
         }
     }
