@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +17,20 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ChallengeKniebeugen extends Fragment {
+
+    Button buttonRemoveKniebeugenAnfänger;
+    Button buttonAddKniebeugenAnfänger;
+    Button buttonFinalAddKniebeugenAnfänger;
+
+    Button buttonRemoveKniebeugenFortgeschritten;
+    Button buttonAddKniebeugenFortgeschritten;
+    Button buttonFinalKniebeugenFortgeschritten;
+
+    TextView doneKniebeugenAnfänger;
+    EditText addKniegbeugenAnfänger;
+
+    TextView doneKniebeugenFortgeschritten;
+    EditText addKniebeugenFortgeschritten;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,24 +67,95 @@ public class ChallengeKniebeugen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getActivity().findViewById(R.id.button_remove_kniebeugen_anfänger);
-        getActivity().findViewById(R.id.button_add_kniebeugen_anfänger);
-        getActivity().findViewById(R.id.final_button_add_kniebeugen_anfänger);
-
-        getActivity().findViewById(R.id.button_remove_kniebeugen_fortgeschritten);
-        getActivity().findViewById(R.id.button_add_kniebeugen_fortgeschritten);
-        getActivity().findViewById(R.id.final_button_add_kniebeugen_fortgeschritten);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    private void initButtonsAnfänger(View view) {
+        buttonRemoveKniebeugenAnfänger = view.findViewById(R.id.button_remove_liegestuetz_anfänger);
+        buttonRemoveKniebeugenAnfänger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetz = addKniegbeugenAnfänger.getText().toString();
+                Integer intLiegestuetz = Integer.parseInt(liegestuetz) - 1;
+                addKniegbeugenAnfänger.setText(intLiegestuetz.toString());
+            }
+        });
+
+        buttonAddKniebeugenAnfänger = view.findViewById(R.id.button_add_liegestuetz_anfänger);
+        buttonAddKniebeugenAnfänger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetz = addKniegbeugenAnfänger.getText().toString();
+                Integer intLiegestuetz = Integer.parseInt(liegestuetz) + 1;
+                addKniegbeugenAnfänger.setText(intLiegestuetz.toString());
+            }
+        });
+
+        buttonFinalAddKniebeugenAnfänger = view.findViewById(R.id.final_button_add_liegestuetz_anfänger);
+        buttonFinalAddKniebeugenAnfänger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetzDone = doneKniebeugenAnfänger.getText().toString();
+                String addLiegestuetz = addKniegbeugenAnfänger.getText().toString();
+                Integer intLiegestuetzDone = Integer.parseInt(liegestuetzDone) + Integer.parseInt(addLiegestuetz);
+                doneKniebeugenAnfänger.setText(intLiegestuetzDone.toString());
+            }
+        });
+    }
+
+    private void initButtonsFortgeschritten(View view) {
+        buttonRemoveKniebeugenFortgeschritten = view.findViewById(R.id.button_remove_liegestuetz_fortgeschritten);
+        buttonRemoveKniebeugenFortgeschritten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetz = addKniebeugenFortgeschritten.getText().toString();
+                Integer intLiegestuetz = Integer.parseInt(liegestuetz) - 1;
+                addKniebeugenFortgeschritten.setText(intLiegestuetz.toString());
+            }
+        });
+
+        buttonAddKniebeugenFortgeschritten = view.findViewById(R.id.button_add_liegestuetz_fortgeschritten);
+        buttonAddKniebeugenFortgeschritten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetz = addKniebeugenFortgeschritten.getText().toString();
+                Integer intLiegestuetz = Integer.parseInt(liegestuetz) + 1;
+                addKniebeugenFortgeschritten.setText(intLiegestuetz.toString());
+            }
+        });
+
+        buttonFinalKniebeugenFortgeschritten = view.findViewById(R.id.final_button_add_liegestuetz_fortgeschritten);
+        buttonFinalKniebeugenFortgeschritten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String liegestuetzDone = doneKniebeugenFortgeschritten.getText().toString();
+                String addLiegestuetz = addKniebeugenFortgeschritten.getText().toString();
+                Integer intLiegestuetzDone = Integer.parseInt(liegestuetzDone) + Integer.parseInt(addLiegestuetz);
+                doneKniebeugenFortgeschritten.setText(intLiegestuetzDone.toString());
+            }
+        });
+    }
+
+    private void initViews(View view) {
+        doneKniebeugenAnfänger = view.findViewById(R.id.done_liegestuetz_anfänger);
+        addKniegbeugenAnfänger = view.findViewById(R.id.add_liegestuetz_anfänger);
+
+        doneKniebeugenFortgeschritten = view.findViewById(R.id.done_liegestuetz_fortgeschritten);
+        addKniebeugenFortgeschritten = view.findViewById(R.id.add_liegestuetz_fortgeschritten);
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_challenge_kniebeugen, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_challenge_liegestuetz, container, false);
+
+        initButtonsAnfänger(view);
+        initButtonsFortgeschritten(view);
+
+        initViews(view);
+
+        return view;
     }
 }
