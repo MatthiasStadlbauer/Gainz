@@ -48,7 +48,6 @@ public class Workout_detail extends AppCompatActivity {
         if (!workoutParts[1].isEmpty()) {
             workout1.setLastdate(workoutParts[1]);
         }
-        
         for (int i = 5; i < workoutParts.length; i++) {
             String[] workoutUebung = workoutParts[i].split(",");
             workout1.addUebung(new Uebungen(workoutUebung[0], Integer.parseInt(workoutUebung[1]), Integer.parseInt(workoutUebung[2])));
@@ -115,6 +114,5 @@ public class Workout_detail extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
 
 }
