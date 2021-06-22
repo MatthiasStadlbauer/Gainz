@@ -111,7 +111,7 @@ public class NotificationService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channels.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_notification_location)
                 .setContentTitle(title)
-                .setContentText("Sie befinden sich in der nähe von " + title + "Workout")
+                .setContentText("Sie befinden sich in der nähe von " + title + "-Workout")
                 .setWhen(System.currentTimeMillis())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);

@@ -3,5 +3,5 @@
 
     <item
         android:id="@+id/daten_fragment_kontextmenue_delete"
-        android:title="Delete" />
+        android:title="Löschen" />
 </menu>
